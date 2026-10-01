@@ -1,29 +1,40 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [toasts, setToasts] = React.useState([]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const newToasts = [...toasts];
+    newToasts.push({ message, variant, id: uuidv4() })
+    setToasts(newToasts);
+  }
+
+  const onDismiss = (id) => {
+    const newToasts = toasts.filter(toast => toast.id !== id);
+    setToasts(newToasts);
+  }
 
   return (
-    <div className={styles.wrapper}>
+    <form className={styles.wrapper} onSubmit={onSubmit}>
       <header>
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
 
-      <Toast
-        message={message}
-        variant={variant}
-        isOpen={isOpen}
-        onDismiss={() => setIsOpen(false)}
+      <ToastShelf
+        toasts={toasts}
+        onDismiss={onDismiss}
       />
 
       <div className={styles.controlsWrapper}>
@@ -46,7 +57,6 @@ function ToastPlayground() {
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
             {VARIANT_OPTIONS.map((option) => {
-              console.log(option);
               return (
                 <label htmlFor={`variant-${option}`}>
                   <input
@@ -70,11 +80,11 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button onClick={()=>setIsOpen(true)}>Pop Toast!</Button>
+            <Button>Pop Toast!</Button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 

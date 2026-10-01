@@ -2,8 +2,11 @@ import React from 'react';
 
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
+import useContext from '../ToastProvider/useContext';
 
-function ToastShelf({ toasts, onDismiss }) {
+function ToastShelf() {
+  const { toasts, onDismiss } = useContext();
+
   return (
     <ol className={styles.wrapper}>
       {toasts.map((toast) => {

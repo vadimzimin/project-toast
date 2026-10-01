@@ -18,6 +18,7 @@ function ToastPlayground() {
     const newToasts = [...toasts];
     newToasts.push({ message, variant, id: uuidv4() })
     setToasts(newToasts);
+    setMessage("");
   }
 
   const onDismiss = (id) => {

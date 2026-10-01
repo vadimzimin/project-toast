@@ -16,7 +16,12 @@ function useContext() {
 			const newToasts = context.toasts.filter(toast => toast.id !== id);
 			context.setToasts(newToasts);
 		}
-		return { pushToast, onDismiss, toasts: context.toasts };
+
+		const dismissAll = () => {
+			context.setToasts([]);
+		}
+
+		return { pushToast, onDismiss, dismissAll, toasts: context.toasts };
 	}, [context]);
 
 	return returValue;
